@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-black text-white selection:bg-white/20 selection:text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHERIS // Cinematic Deep-Space Journeys</title>
+  <meta name="description" content="Discover the universe with Aetheris. Venture past our sky across the universe with breakthrough engineering and pioneering deep-space voyages.">
+
+  <!-- Diagnostic Error Overlay -->
+  <script>
+    window.addEventListener('error', function(event) {
+      const errorDiv = document.createElement('div');
+      errorDiv.style.position = 'fixed';
+      errorDiv.style.top = '0';
+      errorDiv.style.left = '0';
+      errorDiv.style.width = '100%';
+      errorDiv.style.height = '100%';
+      errorDiv.style.backgroundColor = 'rgba(0,0,0,0.96)';
+      errorDiv.style.color = '#ff4d4d';
+      errorDiv.style.padding = '30px';
+      errorDiv.style.fontFamily = 'monospace';
+      errorDiv.style.zIndex = '999999';
+      errorDiv.style.overflow = 'auto';
+      errorDiv.style.lineHeight = '1.5';
+      errorDiv.innerHTML = '<h1 style="font-size:24px;margin-bottom:20px;border-bottom:1px solid #444;padding-bottom:10px;">⚠️ Global Script / Babel Compilation Error</h1>' +
+        '<p><strong>Message:</strong> ' + event.message + '</p>' +
+        '<p><strong>Filename:</strong> ' + event.filename + '</p>' +
+        '<p><strong>Line:</strong> ' + event.lineno + ':' + event.colno + '</p>' +
+        '<p style="margin-top:20px;"><strong>Stack Trace:</strong></p>' +
+        '<pre style="background:rgba(255,255,255,0.05);padding:15px;border-radius:6px;overflow:auto;max-height:60%;">' + (event.error ? event.error.stack : 'No stack trace available') + '</pre>';
+      document.body.appendChild(errorDiv);
+    });
+    window.addEventListener('unhandledrejection', function(event) {
+      const errorDiv = document.createElement('div');
+      errorDiv.style.position = 'fixed';
+      errorDiv.style.top = '0';
+      errorDiv.style.left = '0';
+      errorDiv.style.width = '100%';
+      errorDiv.style.height = '100%';
+      errorDiv.style.backgroundColor = 'rgba(0,0,0,0.96)';
+      errorDiv.style.color = '#ff4d4d';
+      errorDiv.style.padding = '30px';
+      errorDiv.style.fontFamily = 'monospace';
+      errorDiv.style.zIndex = '999999';
+      errorDiv.style.overflow = 'auto';
+      errorDiv.style.lineHeight = '1.5';
+      errorDiv.innerHTML = '<h1 style="font-size:24px;margin-bottom:20px;border-bottom:1px solid #444;padding-bottom:10px;">⚠️ Unhandled Promise Rejection</h1>' +
+        '<p><strong>Reason:</strong> ' + event.reason + '</p>' +
+        '<p style="margin-top:20px;"><strong>Stack Trace:</strong></p>' +
+        '<pre style="background:rgba(255,255,255,0.05);padding:15px;border-radius:6px;overflow:auto;max-height:60%;">' + (event.reason && event.reason.stack ? event.reason.stack : 'No stack trace available') + '</pre>';
+      document.body.appendChild(errorDiv);
+    });
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Material Icons (standard SVG forms are used in cards, but fallback if needed) -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Tech Stack (pinned CDNs) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+  
+  <!-- WebGL 3D Solar System Scope Engines -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script>
+    // Safeguard Framer Motion global assignment so neither is lost or overwritten by undefined
+    if (window.Motion && !window.FramerMotion) {
+      window.FramerMotion = window.Motion;
+    } else if (window.FramerMotion && !window.Motion) {
+      window.Motion = window.FramerMotion;
+    }
+  </script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ["'Instrument Serif'", 'serif'],
+            body: ["'Barlow'", 'sans-serif'],
+          },
+          borderRadius: {
+            DEFAULT: '9999px', // bare rounded -> pill
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Liquid-Glass & Custom Page Styles -->
+  <style>
+    /* Prevent default focus ring styling for a sleek look while keeping accessibility */
+    *:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.4);
+      outline-offset: 4px;
+    }
+
+    /* Hide standard scrollbar but allow scrolling */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Liquid Glass styling system */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-glass::before {
+      content: "";
+      position: absolute; 
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.15) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.15) 80%,
+        rgba(255, 255, 255, 0.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .liquid-glass-strong {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-glass-strong::before {
+      content: "";
+      position: absolute; 
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.2) 80%,
+        rgba(255, 255, 255, 0.5) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="bg-black text-white font-body overflow-x-hidden antialiased">
+  
+  <!-- React Mounting Node -->
+  <div id="root"></div>
+
+  <!-- Load Babel standalone compiled Application bundle -->
+  <script type="text/babel" src="App.js"></script>
+</body>
+</html>

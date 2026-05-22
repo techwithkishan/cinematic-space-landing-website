@@ -1,0 +1,12 @@
+# Local Vercel temporary files and builds
+.vercel
+
+# Editor configurations and environments
+.vscode
+.idea
+.DS_Store
+
+# Logs
+*.log
+.system_generated/
+scratch/
